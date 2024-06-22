@@ -1,4 +1,4 @@
-package com.haris.spring_security_client;
+package com.haris.client;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

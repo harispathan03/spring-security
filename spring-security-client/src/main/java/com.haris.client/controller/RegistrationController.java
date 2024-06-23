@@ -71,10 +71,22 @@ public class RegistrationController{
         }
         Optional<User> user = userService.getUserByPasswordResetToken(token);
         if(user.isPresent()){
-            userService.resetPassword(user.get(),resetPasswordModel.getNewPassword());
+            userService.changePassword(user.get(),resetPasswordModel.getNewPassword());
             return "Password reset successfully";
         }
         return "Invalid token";
+    }
+    @PostMapping("/changePassword")
+    public String changePassword(@RequestBody ResetPasswordModel resetPasswordModel){
+        User user = userService.findUserByEmail(resetPasswordModel.getEmail());
+        if(user==null){
+            return "Email id is invalid";
+        }
+        if(!userService.checkIfValidOldPassword(user, resetPasswordModel.getOldPassword())){
+            return "Invalid old password";
+        }
+        userService.changePassword(user,resetPasswordModel.getNewPassword());
+        return "Password changed successfully.";
     }
 
     private String sendPasswordResetTokenMail(String token, String applicationUrl) {
